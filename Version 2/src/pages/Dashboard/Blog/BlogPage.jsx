@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../../utils/axios';
 import { FaPen, FaMagnifyingGlass, FaUser, FaClock, FaComment, FaChevronLeft, FaChevronRight } from 'react-icons/fa6';
 import { useAuth } from '../../../context/AuthContext';
+
+// ... (styled components skipped, will retain unchanged if I target the top block correctly)
+
+// I will target the imports only
+
 
 const PaginationContainer = styled.div`
   display: flex;
@@ -51,6 +56,11 @@ const BlogHeader = styled.div`
   margin-bottom: 2rem;
   flex-wrap: wrap;
   gap: 1rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
 `;
 
 const Title = styled.h1`
@@ -66,6 +76,11 @@ const Controls = styled.div`
   display: flex;
   gap: 1rem;
   align-items: center;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    width: 100%;
+  }
 `;
 
 const SearchBox = styled.div`
@@ -85,6 +100,10 @@ const SearchBox = styled.div`
       outline: none;
       background: rgba(255, 255, 255, 0.08);
     }
+
+    @media (max-width: 768px) {
+      width: 100%;
+    }
   }
 
   svg {
@@ -93,6 +112,10 @@ const SearchBox = styled.div`
     top: 50%;
     transform: translateY(-50%);
     color: var(--text-secondary);
+  }
+  
+  @media (max-width: 768px) {
+    width: 100%;
   }
 `;
 
@@ -107,6 +130,7 @@ const CreateBtn = styled(Link)`
   align-items: center;
   gap: 0.5rem;
   transition: transform 0.2s, box-shadow 0.2s;
+  justify-content: center; /* Center text on mobile */
 
   &:hover {
     transform: translateY(-2px);
@@ -118,6 +142,11 @@ const BlogGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 2rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr; /* Single column on mobile */
+    gap: 1.5rem;
+  }
 `;
 
 const BlogCard = styled(Link)`
@@ -222,7 +251,7 @@ const BlogPage = () => {
           search
         }).toString();
 
-        const res = await axios.get(`/api/blogs?${query}`);
+        const res = await api.get(`/api/blogs?${query}`);
         if (res.data.status === 'success') {
           setPosts(res.data.data);
           setTotalPages(res.data.totalPages);

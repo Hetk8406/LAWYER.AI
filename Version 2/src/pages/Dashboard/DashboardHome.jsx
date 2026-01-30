@@ -24,39 +24,54 @@ const Container = styled.div`
   animation: ${fadeIn} 0.8s ease-out;
 `;
 
-const NewsTicker = styled.div`
+const NewsWidget = styled.div`
   background: rgba(25, 195, 125, 0.1);
-  color: var(--primary);
-  padding: 0.8rem 1.5rem;
+  border: 1px solid rgba(25, 195, 125, 0.2);
   border-radius: 12px;
   margin-bottom: 2rem;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   overflow: hidden;
-  white-space: nowrap;
-  border: 1px solid rgba(25, 195, 125, 0.2);
   position: relative;
+`;
 
-  strong {
-    margin-right: 1.5rem;
-    z-index: 2;
-    background: #15171e; // Match bg-dark roughly to hide text behind
-    padding-right: 10px;
-  }
+const NewsLabel = styled.div`
+  background: rgba(21, 23, 30, 0.5);
+  color: var(--primary);
+  padding: 0.8rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(25, 195, 125, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 2;
+`;
 
+const NewsMarquee = styled.div`
+  padding: 0.8rem 0;
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  
   .ticker-track {
     display: inline-block;
-    animation: ${scrollText} 45s linear infinite;
-    padding-left: 100%; /* Start off-screen */
-  }
-
-  &:hover .ticker-track {
-    animation-play-state: paused;
+    animation: ${scrollText} 40s linear infinite;
+    padding-left: 100%;
   }
 
   span {
     display: inline-block;
+    color: var(--text-secondary);
     margin-right: 50px;
+    font-size: 0.95rem;
+  }
+
+  &:hover .ticker-track {
+    animation-play-state: paused;
   }
 `;
 
@@ -287,15 +302,17 @@ const DashboardHome = () => {
 
   return (
     <Container>
-      {/* News Ticker */}
-      <NewsTicker>
-        <strong>⚡ LEGAL TRENDING:</strong>
-        <div className="ticker-track">
-          {newsItems.map((item, i) => (
-            <span key={i}>• {item}</span>
-          ))}
-        </div>
-      </NewsTicker>
+      {/* News Ticker - Refined for Mobile Stability */}
+      <NewsWidget>
+        <NewsLabel>⚡ LEGAL TRENDING:</NewsLabel>
+        <NewsMarquee>
+          <div className="ticker-track">
+            {newsItems.map((item, i) => (
+              <span key={i}>• {item}</span>
+            ))}
+          </div>
+        </NewsMarquee>
+      </NewsWidget>
 
       {/* Welcome Banner */}
       <WelcomeBanner>

@@ -24,7 +24,16 @@ const server = http.createServer(app);
 
 // CORS configuration
 const corsOptions = {
-    origin: ['http://localhost:5000', 'http://localhost:3000', 'http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175', 'http://localhost:5176'],
+    origin: (origin, callback) => {
+        const allowedOrigins = ['http://localhost:5000', 'http://localhost:3000', 'http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175', 'http://localhost:5176'];
+        // Allow requests with no origin, localhost, or ANY ngrok domain
+        if (!origin || allowedOrigins.includes(origin) || origin.includes('ngrok-free')) {
+            callback(null, true);
+        } else {
+            console.log('Blocked by CORS:', origin);
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
     allowedHeaders: [
         'Origin',
@@ -129,9 +138,27 @@ process.on('uncaughtException', (err) => {
 });
 
 // 404 handler
-app.use((req, res) => {
+// Serve static files from the React frontend app
+const distPath = path.join(__dirname, '../dist');
+console.log('Serving static files from:', distPath);
+app.use(express.static(distPath));
+
+// API 404 handler (Keep this for API routes)
+app.use('/api/*', (req, res) => {
     res.status(404).json({
         success: false,
-        message: 'Route not found'
+        message: 'API Route not found'
+    });
+});
+
+// Anything that doesn't match the above, send back index.html
+app.get('*', (req, res) => {
+    const indexPath = path.join(distPath, 'index.html');
+    console.log('Fallback to:', indexPath);
+    res.sendFile(indexPath, (err) => {
+        if (err) {
+            console.error('Error sending index.html:', err);
+            res.status(500).send(err.message);
+        }
     });
 });

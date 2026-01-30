@@ -13,8 +13,33 @@ const Container = styled.div`
   overflow: hidden;
 `;
 
+const Pane = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  
+  /* Desktop Logic: */
+  /* First pane (ContactList) is handled by its own width: 300px */
+  /* Second pane (ChatWindow) is flex: 1 */
+  
+  &.contact-pane {
+    /* No flex-grow here, width is controlled by ContactList internally */
+  }
+
+  &.chat-pane {
+    flex: 1;
+    overflow: hidden; /* Fix for double scrollbars or overflow issues */
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    flex: 1;
+    display: ${props => props.$showOnMobile ? 'flex' : 'none'};
+  }
+`;
+
 const CourtroomPage = () => {
-    const { fetchContacts } = useChatContext();
+    const { fetchContacts, chatId } = useChatContext();
     const { socket } = useSocketContext();
 
     useEffect(() => {
@@ -34,8 +59,12 @@ const CourtroomPage = () => {
 
     return (
         <Container>
-            <ContactList />
-            <ChatWindow />
+            <Pane className="contact-pane" $showOnMobile={!chatId}>
+                <ContactList />
+            </Pane>
+            <Pane className="chat-pane" $showOnMobile={!!chatId}>
+                <ChatWindow />
+            </Pane>
         </Container>
     );
 };

@@ -13,6 +13,8 @@ const PageContainer = styled.div`
 
   @media (max-width: 768px) {
     flex-direction: column;
+    height: auto;
+    min-height: 100vh;
     overflow-y: auto;
   }
 `;
@@ -28,6 +30,13 @@ const FormSection = styled.div`
   position: relative;
   overflow-y: auto;
   max-height: 100vh;
+
+  @media (max-width: 768px) {
+    overflow-y: visible; /* Disable internal scroll on mobile */
+    max-height: none;    /* Allow full height expansion */
+    padding: 1rem;
+    flex: none;          /* Let content dictate height */
+  }
 `;
 
 const FormCard = styled.div`

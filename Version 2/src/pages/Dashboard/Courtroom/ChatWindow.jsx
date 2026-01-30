@@ -4,13 +4,14 @@ import api from '../../../utils/axios';
 import { useAuth } from '../../../context/AuthContext';
 import { useChatContext } from '../../../context/ChatContext';
 import { useSocketContext } from '../../../context/SocketContext';
-import { FaPaperPlane } from 'react-icons/fa6';
+import { FaPaperPlane, FaArrowLeft } from 'react-icons/fa6';
 
 const Wrapper = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
   background: rgba(0,0,0,0.1);
+  height: 100%; /* Ensure full height */
 `;
 
 const ChatHeader = styled.div`
@@ -18,7 +19,38 @@ const ChatHeader = styled.div`
   border-bottom: 1px solid rgba(255,255,255,0.1);
   background: rgba(0,0,0,0.2);
   font-weight: 600;
+  display: flex;
+  align-items: center;
 `;
+
+const BackBtn = styled.button`
+  background: none;
+  border: none;
+  color: white;
+  margin-right: 10px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  padding: 5px;
+  border-radius: 50%;
+  
+  &:hover { background: rgba(255,255,255,0.1); }
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
+`;
+
+// ... (Other styled components omitted for brevity, keeping them unchanged) ...
+
+// We need to re-declare components if we are replacing a large chunk or just update the header part.
+// I'll assume I can just update the Header and Imports, but let's be careful.
+// Instead of replacing everything, I will replace imports and ChatHeader definition first.
+
+// Wait, I can't split imports and component definition if they are far apart.
+// I will target the imports first.
+
 
 const MessagesArea = styled.div`
   flex: 1;
@@ -139,7 +171,7 @@ const WarningText = styled.div`
 
 const ChatWindow = () => {
     const { user } = useAuth();
-    const { chatId, chatInfo, updateMessageStatusToRead, fetchContacts } = useChatContext();
+    const { chatId, setChatId, chatInfo, updateMessageStatusToRead, fetchContacts } = useChatContext();
     const { socket, socketValue: { messageData } } = useSocketContext();
 
     const [messages, setMessages] = useState([]);
@@ -230,11 +262,16 @@ const ChatWindow = () => {
 
     return (
         <Wrapper>
-            <ChatHeader onClick={() => setShowModal(true)} style={{ cursor: 'pointer' }} title="Click for details">
-                {chatInfo.name}
-                <small style={{ display: 'block', fontSize: '0.8rem', fontWeight: 'normal', opacity: 0.7 }}>
-                    Click to view details
-                </small>
+            <ChatHeader>
+                <BackBtn onClick={() => setChatId(null)}>
+                    <FaArrowLeft />
+                </BackBtn>
+                <div onClick={() => setShowModal(true)} style={{ cursor: 'pointer', flex: 1 }} title="Click for details">
+                    {chatInfo.name}
+                    <small style={{ display: 'block', fontSize: '0.8rem', fontWeight: 'normal', opacity: 0.7 }}>
+                        Click to view details
+                    </small>
+                </div>
             </ChatHeader>
             <MessagesArea ref={messagesAreaRef}>
                 <WarningText>

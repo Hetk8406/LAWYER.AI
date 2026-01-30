@@ -124,6 +124,12 @@ const sendMessage = async (req, res) => {
             }
         }
 
+        // 4. Final Fallback if ALL fail
+        if (!botResponse) {
+            botResponse = "I apologize, but I am unable to generate a response at the moment. Please try again later.";
+            source = 'fallback';
+        }
+
         // Save Bot Message
         session.messages.push({ role: 'bot', content: botResponse });
         await session.save();

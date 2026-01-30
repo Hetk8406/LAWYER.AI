@@ -43,6 +43,10 @@ const HeroSection = styled.div`
     background: linear-gradient(to right, #fff, #a0e6ff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+
+    @media (max-width: 768px) {
+      font-size: 2.5rem; /* Better for mobile */
+    }
   }
 
   p {

@@ -128,3 +128,32 @@
 - [x] **Debugging & Validation**
     - [x] Verify API logic returns correct contacts
     - [x] Verify email/auth middleware (patched/verified users)
+
+## Phase 5: Mobile UI Polish
+- [x] **Dashboard Ticker**
+    - [x] Pin "Legal Trending" title (Prevent it from moving).
+    - [x] Ensure layout is Title (top) -> Marquee (bottom).
+- [x] **AI Chat Page**
+    - [x] **Fix Sidebar**: Ensure History is CLOSED by default on mobile.
+    - [x] **Fix Search Bar**: Adjust height/width for mobile screens.
+
+## Phase 6: ChatGPT UI Redesign & Mobile Polish
+- [x] **Chat Layout**
+    - [x] Switch to flat dark theme (no radial gradient). (Reverted to gradient per user request)
+    - [x] Create "Sticky Mobile Header".
+    - [x] **Mobile Scroll Fix**: Use `dvh` and correct flex overflow.
+    - [x] **Welcome Screen Fix**: Allow scrolling on mobile.
+- [x] **Message Styling**
+    - [x] Remove bubble backgrounds.
+    - [x] Implement "Icon + Text" row layout.
+- [x] **Input Area**
+    - [x] Create floating "Pill" shape input.
+    - [x] Add disclaimer text footer.
+- [x] **Courtroom Mobile Experience**
+    - [x] Implement WhatsApp-style navigation (List -> Chat).
+    - [x] Add Back Button in Chat Window.
+- [x] **IPC Finder Mobile Polish**
+    - [x] Fix Search Button overflow.
+    - [x] Fix Pagination Button wrapping.
+- [x] **About Page Polish**
+    - [x] Fix Typography size on mobile.

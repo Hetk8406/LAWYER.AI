@@ -10,6 +10,11 @@ const Sidebar = styled.div`
   border-right: 1px solid rgba(255,255,255,0.1);
   display: flex;
   flex-direction: column;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    border-right: none;
+  }
 `;
 
 const Header = styled.div`

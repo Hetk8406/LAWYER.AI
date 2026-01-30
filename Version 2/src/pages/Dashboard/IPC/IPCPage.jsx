@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useAuth } from '../../../context/AuthContext';
-import axios from 'axios';
+import api from '../../../utils/axios'; // Use configured instance
 import { FaSearch, FaBook, FaGavel, FaExclamationTriangle } from 'react-icons/fa';
 
 const PageContainer = styled.div`
@@ -70,12 +70,22 @@ const SearchInputWrapper = styled.div`
     box-shadow: 0 8px 32px rgba(118, 75, 162, 0.2);
     transform: translateY(-2px);
   }
+
+  @media (max-width: 480px) {
+    padding: 0.4rem 0.8rem;
+    border-radius: 15px;
+  }
 `;
 
 const SearchIcon = styled(FaSearch)`
   color: var(--text-secondary);
   font-size: 1.2rem;
   margin-right: 1rem;
+  
+  @media (max-width: 480px) {
+    margin-right: 0.5rem;
+    font-size: 1rem;
+  }
 `;
 
 const SearchInput = styled.input`
@@ -86,9 +96,15 @@ const SearchInput = styled.input`
   font-size: 1.1rem;
   padding: 1rem 0;
   outline: none;
+  min-width: 0; /* Fix flex overflow */
 
   &::placeholder {
     color: var(--text-secondary);
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 1rem;
+    padding: 0.8rem 0;
   }
 `;
 
@@ -103,6 +119,7 @@ const SearchButton = styled.button`
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
   margin-left: 0.5rem;
+  flex-shrink: 0; /* Prevent button from shrinking too much */
 
   &:hover {
     transform: translateY(-1px);
@@ -116,6 +133,11 @@ const SearchButton = styled.button`
   &:disabled {
     opacity: 0.7;
     cursor: not-allowed;
+  }
+
+  @media (max-width: 480px) {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
   }
 `;
 
@@ -324,6 +346,11 @@ const PaginationContainer = styled.div`
   gap: 1rem;
   margin-top: 2rem;
   padding-bottom: 2rem;
+  flex-wrap: wrap; /* Allow wrapping on small screens */
+
+  @media (max-width: 480px) {
+    gap: 0.5rem;
+  }
 `;
 
 const PageButton = styled.button`
@@ -345,6 +372,12 @@ const PageButton = styled.button`
     opacity: 0.5;
     cursor: not-allowed;
     transform: none;
+  }
+
+  @media (max-width: 480px) {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+    min-width: 32px;
   }
 `;
 
@@ -371,10 +404,8 @@ const IPCPage = () => {
     setCurrentPage(1); // Reset to first page on new search
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      const response = await axios.get(`${apiUrl}/api/ipc/search`, {
-        params: { query },
-        headers: { Authorization: `Bearer ${token}` }
+      const response = await api.get(`/api/ipc/search`, {
+        params: { query }
       });
 
       if (response.data.status === 'success') {
