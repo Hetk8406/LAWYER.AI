@@ -261,7 +261,7 @@ const Navbar = () => {
                 src={
                   (user.profilePicture || user.profileImage).startsWith('http')
                     ? (user.profilePicture || user.profileImage)
-                    : `${(user.profilePicture || user.profileImage).startsWith('/') ? '' : '/'}${user.profilePicture || user.profileImage}`
+                    : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${(user.profilePicture || user.profileImage).startsWith('/') ? '' : '/'}${user.profilePicture || user.profileImage}`
                 }
                 alt="User"
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
