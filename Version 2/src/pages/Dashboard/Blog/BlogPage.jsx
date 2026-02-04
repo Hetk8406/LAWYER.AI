@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../../utils/axios';
 import { FaPen, FaMagnifyingGlass, FaUser, FaClock, FaComment, FaChevronLeft, FaChevronRight } from 'react-icons/fa6';
 import { useAuth } from '../../../context/AuthContext';
 
@@ -251,7 +251,7 @@ const BlogPage = () => {
           search
         }).toString();
 
-        const res = await axios.get(`/api/blogs?${query}`);
+        const res = await api.get(`/api/blogs?${query}`);
         if (res.data.status === 'success') {
           setPosts(res.data.data);
           setTotalPages(res.data.totalPages);

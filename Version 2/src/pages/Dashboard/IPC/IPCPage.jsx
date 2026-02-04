@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useAuth } from '../../../context/AuthContext';
-import axios from 'axios';
+import api from '../../../utils/axios'; // Use configured instance
 import { FaSearch, FaBook, FaGavel, FaExclamationTriangle } from 'react-icons/fa';
 
 const PageContainer = styled.div`
@@ -404,10 +404,8 @@ const IPCPage = () => {
     setCurrentPage(1); // Reset to first page on new search
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      const response = await axios.get(`${apiUrl}/api/ipc/search`, {
-        params: { query },
-        headers: { Authorization: `Bearer ${token}` }
+      const response = await api.get(`/api/ipc/search`, {
+        params: { query }
       });
 
       if (response.data.status === 'success') {

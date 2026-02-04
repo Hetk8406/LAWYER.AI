@@ -579,7 +579,7 @@ const ProfilePage = () => {
                 src={
                   (formData.profilePicture || formData.profileImage).startsWith('http')
                     ? (formData.profilePicture || formData.profileImage)
-                    : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${(formData.profilePicture || formData.profileImage).startsWith('/') ? '' : '/'}${formData.profilePicture || formData.profileImage}`
+                    : `${(formData.profilePicture || formData.profileImage).startsWith('/') ? '' : '/'}${formData.profilePicture || formData.profileImage}`
                 }
                 alt="Profile"
               />
